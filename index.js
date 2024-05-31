@@ -1,9 +1,14 @@
 import { createServer } from 'node:http';
 
-import  express from 'express';
+import express from 'express';
 import bodyParser from 'body-parser';
+import { config } from 'dotenv'
+import { connect } from 'mongoose'
+
+import authRoute from './routes/auth';
 
 const { json, raw, urlencoded } = bodyParser;
+config();
 
 const PORT = process.env.PORT || 8080
 
@@ -22,11 +27,30 @@ app.get('/', (req, res) => {
     })
 })
 
+app.use("/auth", authRoute);
 
 app.use("/*", (_, res) => {
     res.redirect("/");
 })
 
-server.listen(PORT,() => {
+async function connectDb() {
+    connect(process.env.MONGODB_URI, {
+        auth: {
+            username: process.env.MONGODB_USERNAME,
+            password: process.env.MONGODB_PASSWORD
+        },
+        dbName: 'webChatApp'
+    })
+        .then(() => {
+            console.log('Connection successful');
+        })
+        .catch((err) => {
+            console.error(err);
+        })
+}
+
+
+server.listen(PORT, () => {
+    connectDb()
     console.log(`Server running http://localhost:8080/`)
 })
