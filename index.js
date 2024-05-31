@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import { config } from 'dotenv'
 import { connect } from 'mongoose'
 
-import authRoute from './routes/auth';
+import authRoute from './routes/auth.js';
 
 const { json, raw, urlencoded } = bodyParser;
 config();
@@ -23,15 +23,14 @@ app.use(raw())
 
 app.get('/', (req, res) => {
     res.json({
-        "message": "Hello world"
+        "message": "Hello world",
+        "database": "Mongodb database instance connected",
+        "auth": "Added google OAuth2.0"
     })
 })
 
 app.use("/auth", authRoute);
 
-app.use("/*", (_, res) => {
-    res.redirect("/");
-})
 
 async function connectDb() {
     connect(process.env.MONGODB_URI, {

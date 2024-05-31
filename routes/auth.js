@@ -9,7 +9,13 @@ const authRoute = Router({
     strict: true
 })
 
-authRoute.use("/", async (req, res) => {
+authRoute.get("/", (_, res) => {
+    res.json({
+        'Auth': 'Google OAuth 2.0'
+    })
+})
+
+authRoute.post("/", async (req, res) => {
     const email = req.body.email;
     const token = req.headers.authorization.split(' ')[1]
 
