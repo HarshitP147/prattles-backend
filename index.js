@@ -3,6 +3,7 @@ import { createServer } from 'node:http';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { config } from 'dotenv'
+import cors from 'cors'
 import { connect } from 'mongoose'
 
 import authRoute from './routes/auth.js';
@@ -20,6 +21,13 @@ app.use(urlencoded({
     extended: true,
 }))
 app.use(raw())
+app.use(cors({
+    origin: 'http://localhost:3000',
+    allowedHeaders: '*',
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    preflightContinue: true
+}));
 
 app.get('/', (req, res) => {
     res.json({

@@ -1,9 +1,9 @@
 import { Schema, model } from "mongoose";
 
-import generateId from "../utils/generateId";
+import generateId from "../utils/generateId.js";
 
 const userSchema = new Schema({
-    _id: generateId('usr'),
+    _id: String,
     name: String,
     email: String,
     createdAt: {
@@ -16,6 +16,8 @@ const userSchema = new Schema({
         ref: "Chat",
         required: true
     }]
+}, {
+    _id: true
 });
 
 const User = model('User', userSchema);

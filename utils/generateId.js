@@ -6,5 +6,3 @@ export default function generateId(idType) {
 
     return `${idType}-${id}`
 }
-
-console.log(generateId('usr'))

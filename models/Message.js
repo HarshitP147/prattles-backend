@@ -3,7 +3,8 @@ import { Schema, model } from "mongoose";
 const messageSchema = new Schema({
     sender: {
         type: Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        unique: true
     },
     content: [{
         text: String,
@@ -16,7 +17,7 @@ const messageSchema = new Schema({
     repliedTo: {
         // replied to their message
         type: Schema.Types.ObjectId,
-        ref: "Message"
+        ref: "Message",
     },
     timestamp: {
         type: Date,

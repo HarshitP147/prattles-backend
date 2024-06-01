@@ -16,7 +16,8 @@ const imageSchema = new Schema({
     },
     sender: {
         type: Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        unique: true
     }
 })
 
