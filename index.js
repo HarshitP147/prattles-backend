@@ -7,6 +7,7 @@ import cors from 'cors'
 import { connect } from 'mongoose'
 
 import authRoute from './routes/auth.js';
+import userRoute from './routes/user.js';
 
 const { json, raw, urlencoded } = bodyParser;
 config();
@@ -38,6 +39,7 @@ app.get('/', (req, res) => {
 })
 
 app.use("/auth", authRoute);
+app.use("/user", userRoute);
 
 
 async function connectDb() {

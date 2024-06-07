@@ -17,7 +17,15 @@ authRoute.get("/", (_, res) => {
 })
 
 authRoute.post("/", async (req, res) => {
+
+    if (!req.headers.authorization) {
+        return res.status(401).json({
+            message: "No token provided"
+        })
+    }
+
     const token = req.headers.authorization.split(' ')[1]
+
     let statusCode;
 
     // get user information about the user
@@ -52,11 +60,11 @@ authRoute.post("/", async (req, res) => {
 
             const { token, tokenExpiry } = generateToken(newUser.email, newUser._id);
 
-            res.status(200).json({
+            return res.status(200).json({
                 message: 'User saved succesfully',
                 token: token,
                 tokenExpiry: tokenExpiry,
-                userId: newUser._id
+                userId: newUser._id,
             })
 
         } catch (err) {
@@ -64,7 +72,7 @@ authRoute.post("/", async (req, res) => {
 
             statusCode = statusCode || 500
 
-            res.status(statusCode).json({
+            return res.status(statusCode).json({
                 message: err.message || 'Could not save user'
             })
         }
@@ -73,7 +81,7 @@ authRoute.post("/", async (req, res) => {
 
         const { token, tokenExpiry } = generateToken(existingUser.email, existingUser._id);
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "User signed in succesfully",
             userId: existingUser._id,
             token: token,

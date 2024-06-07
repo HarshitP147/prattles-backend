@@ -1,7 +1,5 @@
 import { Schema, model } from "mongoose";
 
-import generateId from "../utils/generateId.js";
-
 const userSchema = new Schema({
     _id: String,
     name: String,
