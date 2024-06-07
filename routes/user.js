@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import { io } from "../server.js";
 import User from "../models/User.js";
 
 const userRoute = Router();
@@ -25,5 +26,6 @@ userRoute.get("/:userId", async (req, res) => {
         })
     }
 })
+
 
 export default userRoute;
