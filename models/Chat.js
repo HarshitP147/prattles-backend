@@ -1,23 +1,24 @@
 import { Schema, model } from "mongoose";
 
-import generateId from "../utils/generateId.js";
-
 const chatSchema = new Schema({
     _id: String,
-    name: String,
+    participants: [{
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    }],
+    messages: [{
+        type: Schema.Types.ObjectId,
+        ref: "Message",
+    }],
+    lastMessage: {
+        type: Schema.Types.ObjectId,
+        ref: "Message"
+    },
     createdAt: {
         type: Date,
         default: Date.now
     },
-    avatarUrl: String,
-    messages: [{
-        type: Schema.Types.ObjectId,
-        ref: "Message"
-    }],
-    members: [{
-        type: Schema.Types.ObjectId,
-        ref: "User"
-    }]
 }, {
     _id: true,
 })

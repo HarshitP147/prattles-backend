@@ -10,6 +10,7 @@ import { Server } from 'socket.io'
 import authRoute from './routes/auth.js';
 import userRoute from './routes/user.js';
 
+
 const { json, raw, urlencoded } = bodyParser;
 config();
 
@@ -66,15 +67,6 @@ export async function connectDb() {
             console.error(err);
         })
 }
-
-
-io.on("connection", (socket) => {
-    console.log(`Client joined with client id:${socket.id}`)
-
-    socket.on('search', (query) => {
-        console.log(query);
-    })
-})
 
 export { io }
 export default server;
