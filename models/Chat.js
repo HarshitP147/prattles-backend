@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 
 const chatSchema = new Schema({
-    _id: String,
+    chatId: String,
     participants: [{
         type: Schema.Types.ObjectId,
         ref: "User",
@@ -16,7 +16,7 @@ const chatSchema = new Schema({
         ref: "Message"
     },
 }, {
-    _id: false,
+    _id: true,
     timestamps:true
 })
 

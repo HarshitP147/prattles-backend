@@ -1,7 +1,10 @@
 import { Schema, model } from "mongoose";
 
 const userSchema = new Schema({
-    _id: String,
+    userId: {
+        type: String,
+        required: true,
+    },
     name: String,
     email: String,
     createdAt: {
@@ -15,7 +18,7 @@ const userSchema = new Schema({
         required: true
     }]
 }, {
-    _id: false
+    _id: true
 });
 
 const User = model('User', userSchema);

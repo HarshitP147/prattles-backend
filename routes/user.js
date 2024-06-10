@@ -9,7 +9,10 @@ userRoute.get("/:userId", async (req, res) => {
     const userId = req.params.userId;
 
     try {
-        const user = await User.findById(userId)
+        const user = await User.findOne({
+            userId: userId
+        })
+
 
         return res.status(200).json({
             email: user.email,

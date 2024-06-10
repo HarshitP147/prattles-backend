@@ -1,4 +1,4 @@
-import { startSession,Types } from "mongoose";
+import { startSession, Types } from "mongoose";
 
 import generateId from './generateId.js';
 
@@ -7,8 +7,10 @@ import Chat from "../models/Chat.js";
 import Message from '../models/Message.js';
 
 async function saveNewChat(fromId, toId, message) {
-    const fromUser = await User.findById(fromId);
-    const toUser = await User.findById(toId);
+    let fromUser, toUser;
+
+    fromUser = await User.findOne({ userId: fromId });
+    toUser = await User.findOne({ userId: toId })
 
     // implementing sessions to follow all or none property
     const session = await startSession()
@@ -20,16 +22,22 @@ async function saveNewChat(fromId, toId, message) {
         const messageId = generateId("msg");
 
         const newMessage = new Message({
-            _id: messageId,
+            messageId: messageId,
             content: [{
                 text: message
             }],
             sender: fromUser,
         })
 
+        let participants = [fromUser._id];
+
+        if (fromUser._id === toUser._id) {
+            participants.push(toUser._id);
+        }
+
         const newChat = new Chat({
-            _id: chatId,
-            participants: [fromUser, toUser],
+            chatId: chatId,
+            participants: participants,
             messages: [newMessage],
             lastMessage: newMessage
         })
@@ -42,24 +50,22 @@ async function saveNewChat(fromId, toId, message) {
             session: session
         })
 
-        await User.updateOne(
-            { _id: fromUser._id },
+        await User.findOneAndUpdate({ userId: fromId },
             {
-                $addToSet: { chats: newChat._id }
-            },
-            { session: session }
+                $addToSet: { chats: newChat._id },
+            }, { session: session }
         )
 
-        await User.updateOne(
-            { _id: toUser._id },
-            { $addToSet: { chat: newChat._id } },
-            { session: session }
-        )
+        if (fromId !== toId) {
+            await User.findOneAndUpdate({ userId: toId },
+                {
+                    $addToSet: { chats: newChat._id },
+                }, { session: session }
+            )
+        }
 
-        await session.commitTransaction();
+        await session.commitTransaction()
         session.endSession();
-
-        return fromUser.chats;
 
     } catch (err) {
         await session.abortTransaction();

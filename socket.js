@@ -6,15 +6,13 @@ import saveNewChat from './utils/saveNewChat.js';
 export default function configureSockets(io) {
 
     io.on("connection", (socket) => {
-        console.log(`Client joined with client id:${socket.id}`)
-
         socket.on('search', async (query) => {
             const contacts = await User.find({
                 email: {
                     $regex: query,
                     $options: 'i'
                 }
-            }).select(['_id', 'name', 'avatarUrl', 'email'])
+            }).select(['userId', 'name', 'avatarUrl', 'email'])
 
             socket.emit('userSearchResults', contacts);
         })
@@ -26,18 +24,13 @@ export default function configureSockets(io) {
             const toId = info.to;
             const message = info.message;
 
-            try {
-                const chats = saveNewChat(fromId, toId, message)
+            await saveNewChat(fromId, toId, message);
 
-                socket.emit("updateChat", chats);
+            const user = await User.findOne({ userId: fromId })
 
-            } catch (err) {
-                // return the old chats only
-                const fromUser = await User.findById(fromId)
+            const chats = user.chats;
 
-                socket.emit("updateChat",fromUser.chats);
-            }
-
+            socket.emit("updateChat",chats);
         })
     })
 }

@@ -50,7 +50,7 @@ authRoute.post("/", async (req, res) => {
             const userId = generateId('usr');
 
             const newUser = new User({
-                _id: userId,
+                userId: userId,
                 email: userData.email,
                 name: userData.name,
                 avatarUrl: userData.picture,
@@ -58,13 +58,13 @@ authRoute.post("/", async (req, res) => {
 
             await newUser.save()
 
-            const { token, tokenExpiry } = generateToken(newUser.email, newUser._id);
+            const { token, tokenExpiry } = generateToken(newUser.email, newUser.userId);
 
             return res.status(200).json({
                 message: 'User saved succesfully',
                 token: token,
                 tokenExpiry: tokenExpiry,
-                userId: newUser._id,
+                userId: newUser.userId,
             })
 
         } catch (err) {
@@ -83,7 +83,7 @@ authRoute.post("/", async (req, res) => {
 
         return res.status(200).json({
             message: "User signed in succesfully",
-            userId: existingUser._id,
+            userId: existingUser.userId,
             token: token,
             tokenExpiry: tokenExpiry
         })
