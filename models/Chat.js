@@ -15,12 +15,9 @@ const chatSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Message"
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
 }, {
-    _id: true,
+    _id: false,
+    timestamps:true
 })
 
 const Chat = model("Chat", chatSchema);

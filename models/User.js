@@ -15,7 +15,7 @@ const userSchema = new Schema({
         required: true
     }]
 }, {
-    _id: true
+    _id: false
 });
 
 const User = model('User', userSchema);

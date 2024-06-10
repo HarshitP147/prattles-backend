@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 
 const messageSchema = new Schema({
+    _id: String,
     sender: {
         type: Schema.Types.ObjectId,
         ref: "User",
@@ -19,10 +20,9 @@ const messageSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Message",
     },
-    timestamp: {
-        type: Date,
-        default: Date.now
-    }
+}, {
+    _id: false,
+    timestamps: true
 });
 
 const Message = model("Message", messageSchema);

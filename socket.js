@@ -1,9 +1,7 @@
-import { io } from "./server.js";
-
-import generateId from "./utils/generateId.js";
 
 import User from "./models/User.js";
-import Chat from "./models/Chat.js";
+
+import saveNewChat from './utils/saveNewChat.js';
 
 export default function configureSockets(io) {
 
@@ -24,6 +22,21 @@ export default function configureSockets(io) {
         socket.on('newChat', async (info) => {
 
             // saving to new Chats
+            const fromId = info.from;
+            const toId = info.to;
+            const message = info.message;
+
+            try {
+                const chats = saveNewChat(fromId, toId, message)
+
+                socket.emit("updateChat", chats);
+
+            } catch (err) {
+                // return the old chats only
+                const fromUser = await User.findById(fromId)
+
+                socket.emit("updateChat",fromUser.chats);
+            }
 
         })
     })
