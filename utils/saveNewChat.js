@@ -1,4 +1,4 @@
-import { startSession, Types } from "mongoose";
+import { startSession } from "mongoose";
 
 import generateId from './generateId.js';
 
@@ -37,9 +37,10 @@ async function saveNewChat(fromId, toId, message) {
 
         const newChat = new Chat({
             chatId: chatId,
+            chatType: "single",
             participants: participants,
             messages: [newMessage],
-            lastMessage: newMessage
+            lastMessage: newMessage,
         })
 
         await newMessage.save({
@@ -70,7 +71,6 @@ async function saveNewChat(fromId, toId, message) {
     } catch (err) {
         await session.abortTransaction();
         session.endSession()
-        console.error(err);
     }
 }
 export default saveNewChat;

@@ -2,6 +2,11 @@ import { Schema, model } from "mongoose";
 
 const chatSchema = new Schema({
     chatId: String,
+    chatType: {
+        type: String,
+        enum: ["group", "single"],
+        required: true
+    },
     participants: [{
         type: Schema.Types.ObjectId,
         ref: "User",
@@ -17,7 +22,7 @@ const chatSchema = new Schema({
     },
 }, {
     _id: true,
-    timestamps:true
+    timestamps: true
 })
 
 const Chat = model("Chat", chatSchema);

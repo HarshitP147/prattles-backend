@@ -18,19 +18,28 @@ export default function configureSockets(io) {
         })
 
         socket.on('newChat', async (info) => {
-
             // saving to new Chats
             const fromId = info.from;
             const toId = info.to;
             const message = info.message;
 
-            await saveNewChat(fromId, toId, message);
+            // await saveNewChat(fromId, toId, message)
+            saveNewChat(fromId, toId, message)
+                .then(async () => {
+                    const user = await User.findOne({ userId: fromId })
+                        .populate({
+                            path: 'chats',
+                            select: 'chatId chatType lastMessage'
+                        })
 
-            const user = await User.findOne({ userId: fromId })
+                    const chats = user.chats;
 
-            const chats = user.chats;
+                    io.emit("updateChat", chats);
 
-            socket.emit("updateChat",chats);
+                })
+                .catch(err => {
+                    socket.emit("error", "Already in contacts");
+                })
         })
     })
 }
