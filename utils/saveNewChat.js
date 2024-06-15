@@ -31,13 +31,12 @@ async function saveNewChat(fromId, toId, message) {
 
         let participants = [fromUser._id];
 
-        if (fromUser._id === toUser._id) {
+        if (fromUser._id !== toUser._id) {
             participants.push(toUser._id);
         }
 
         const newChat = new Chat({
             chatId: chatId,
-            chatType: "single",
             participants: participants,
             messages: [newMessage],
             lastMessage: newMessage,

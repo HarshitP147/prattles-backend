@@ -34,7 +34,7 @@ export default function configureSockets(io) {
 
                     const chats = user.chats;
 
-                    io.emit("updateChat", chats);
+                    socket.emit("updateChat", chats);
 
                 })
                 .catch(err => {
