@@ -9,6 +9,7 @@ import { Server } from 'socket.io'
 
 import authRoute from './routes/auth.js';
 import userRoute from './routes/user.js';
+import chatRoute from './routes/chat.js';
 
 
 const { json, raw, urlencoded } = bodyParser;
@@ -49,6 +50,7 @@ app.get('/', (req, res) => {
 
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
+app.use('/chat', chatRoute);
 
 
 export async function connectDb() {

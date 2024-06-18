@@ -19,10 +19,10 @@ userRoute.get("/:userId", async (req, res) => {
             },
             {
                 path: "lastMessage",
-                select: "sender content.text",
+                select: "sender content.text createdAt",
                 populate: {
                     path: "sender",
-                    select: "name avatarUrl"
+                    select: "userId name avatarUrl"
                 }
             },]
 
