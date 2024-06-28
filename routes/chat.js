@@ -10,7 +10,14 @@ chatRoute.get("/:chatId", async (req, res) => {
         chatId: req.params.chatId
     })
         .select('messages')
-        .populate('messages', 'sender content createdAt')
+        .populate({
+            path: "messages",
+            select: "sender content createdAt",
+            populate: {
+                path: 'sender',
+                select: 'userId'
+            }
+        })
 
     res.status(200).json(chatInfo);
 })

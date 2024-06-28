@@ -7,14 +7,14 @@ const messageSchema = new Schema({
         ref: "User",
         unique: true
     },
-    content: [{
+    content: {
         text: String,
         images: [{
             // can be a single image or multiple images
             type: Schema.Types.ObjectId,
             ref: "Image"
         }]
-    }],
+    },
     repliedTo: {
         // replied to their message
         type: Schema.Types.ObjectId,

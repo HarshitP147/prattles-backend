@@ -23,9 +23,7 @@ async function saveNewChat(fromId, toId, message) {
 
         const newMessage = new Message({
             messageId: messageId,
-            content: [{
-                text: message
-            }],
+            content: { text: message },
             sender: fromUser,
         })
 
