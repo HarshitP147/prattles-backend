@@ -11,6 +11,7 @@ import authRoute from './routes/auth.js';
 import userRoute from './routes/user.js';
 import chatRoute from './routes/chat.js';
 
+import User from './models/User.js';
 
 const { json, raw, urlencoded } = bodyParser;
 config();

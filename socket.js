@@ -1,11 +1,14 @@
 
 import User from "./models/User.js";
+import Chat from "./models/Chat.js";
+import Message from "./models/Message.js";
 
 import saveNewChat from './utils/saveNewChat.js';
 
 export default function configureSockets(io) {
 
     io.on("connection", (socket) => {
+
         socket.on('search', async (query) => {
             const contacts = await User.find({
                 email: {
@@ -41,5 +44,24 @@ export default function configureSockets(io) {
                     socket.emit("error", "Already in contacts");
                 })
         })
+
+        socket.on("joinRoom", roomInfo => {
+            socket.join(roomInfo.chatId)
+            // console.log(`User joined room ${roomInfo.chatId}`)
+        });
+
+        socket.on("leaveRoom", roomInfo => {
+            socket.leave(roomInfo.chatId);
+            // console.log(`User left room ${roomInfo.chatId}`)
+        });
+
+        socket.on('message', async (messageInfo) => {
+            console.log(messageInfo);
+
+
+
+
+        })
     })
+
 }
