@@ -10,8 +10,8 @@ import { Server } from 'socket.io'
 import authRoute from './routes/auth.js';
 import userRoute from './routes/user.js';
 import chatRoute from './routes/chat.js';
+import messageRoute from './routes/message.js';
 
-import User from './models/User.js';
 
 const { json, raw, urlencoded } = bodyParser;
 config();
@@ -41,18 +41,19 @@ app.use(cors({
     preflightContinue: true
 }));
 
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
     res.json({
         "message": "Hello world",
         "database": "Mongodb database instance connected",
-        "auth": "Added google OAuth2.0"
+        "auth": "Added google OAuth2.0",
+        "socket":"Added socket instance for communication"
     })
 })
 
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
 app.use('/chat', chatRoute);
-
+app.use('/message', messageRoute);
 
 export async function connectDb() {
     connect(process.env.MONGODB_URI, {
