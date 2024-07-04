@@ -30,8 +30,16 @@ chatRoute.get("/:userId", async (req, res) => {
             }]
         })
 
+
+
     const processedChats = userChats.chats.map(chat => {
         const participantsExceptSelf = chat.participants.filter(participant => participant.userId !== userId);
+
+        if (participantsExceptSelf.length === 0) {
+            return {
+                ...chat.toObject()
+            }
+        }
 
         return {
             ...chat.toObject(),

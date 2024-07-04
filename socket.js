@@ -47,12 +47,10 @@ export default function configureSockets(io) {
 
         socket.on("joinRoom", roomInfo => {
             socket.join(roomInfo.chatId)
-            // console.log(`User joined room ${roomInfo.chatId}`)
         });
 
         socket.on("leaveRoom", roomInfo => {
             socket.leave(roomInfo.chatId);
-            // console.log(`User left room ${roomInfo.chatId}`)
         });
 
         socket.on('message', async (messageInfo) => {
