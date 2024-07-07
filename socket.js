@@ -4,11 +4,13 @@ import Chat from "./models/Chat.js";
 import Message from "./models/Message.js";
 
 import saveNewChat from './utils/saveNewChat.js';
+import newMessage from "./utils/newMessage.js";
 
 export default function configureSockets(io) {
 
     io.on("connection", (socket) => {
 
+        // works fine
         socket.on('search', async (query) => {
             const contacts = await User.find({
                 email: {
@@ -20,25 +22,16 @@ export default function configureSockets(io) {
             socket.emit('userSearchResults', contacts);
         })
 
-        socket.on('newChat', async (info) => {
+        socket.on('newChat', async (newChat) => {
             // saving to new Chats
-            const fromId = info.from;
-            const toId = info.to;
-            const message = info.message;
+            const fromId = newChat.from;
+            const toId = newChat.to;
+            const message = newChat.message;
 
             // await saveNewChat(fromId, toId, message)
             saveNewChat(fromId, toId, message)
                 .then(async () => {
-                    const user = await User.findOne({ userId: fromId })
-                        .populate({
-                            path: 'chats',
-                            select: 'chatId chatType lastMessage'
-                        })
-
-                    const chats = user.chats;
-
-                    socket.emit("updateChat", chats);
-
+                    // send the user new chat
                 })
                 .catch(err => {
                     socket.emit("error", "Already in contacts");
@@ -53,13 +46,7 @@ export default function configureSockets(io) {
             socket.leave(roomInfo.chatId);
         });
 
-        socket.on('message', async (messageInfo) => {
-            console.log(messageInfo);
 
-
-
-
-        })
     })
 
 }
