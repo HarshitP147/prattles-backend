@@ -1,22 +1,9 @@
-import { Router } from "express";
-
 import User from "../models/User.js";
 
 import generateToken from "../utils/generateToken.js";
 import generateId from "../utils/generateId.js";
 
-const authRoute = Router({
-    caseSensitive: false,
-    strict: true
-})
-
-authRoute.get("/", (_, res) => {
-    res.json({
-        'Auth': 'Google OAuth 2.0'
-    })
-})
-
-authRoute.post("/", async (req, res) => {
+async function authPost(req, res) {
 
     if (!req.headers.authorization) {
         return res.status(401).json({
@@ -33,7 +20,7 @@ authRoute.post("/", async (req, res) => {
         method: "GET",
         headers: {
             "Authorization": `Bearer ${token}`,
-            'Access-Control-Allow-Headers':'*'
+            'Access-Control-Allow-Headers': '*'
         },
     })
 
@@ -89,7 +76,5 @@ authRoute.post("/", async (req, res) => {
             tokenExpiry: tokenExpiry
         })
     }
-})
-
-
-export default authRoute;
+}
+export { authPost };

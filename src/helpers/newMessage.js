@@ -1,6 +1,6 @@
 import { startSession } from "mongoose";
 
-import generateId from "./generateId.js";
+import generateId from "../utils/generateId.js";
 
 import Message from "../models/Message.js";
 import Chat from "../models/Chat.js";

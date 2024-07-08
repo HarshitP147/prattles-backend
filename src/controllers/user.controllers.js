@@ -1,10 +1,7 @@
-import { Router } from "express";
 
 import User from "../models/User.js";
 
-const userRoute = Router();
-
-userRoute.get("/:userId", async (req, res) => {
+async function getUser(req, res) {
     const userId = req.params.userId;
 
     try {
@@ -25,7 +22,5 @@ userRoute.get("/:userId", async (req, res) => {
             chats: []
         })
     }
-})
-
-
-export default userRoute;
+}
+export { getUser }

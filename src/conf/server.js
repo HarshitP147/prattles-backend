@@ -7,11 +7,8 @@ import cors from 'cors'
 import { connect } from 'mongoose'
 import { Server } from 'socket.io'
 
-import authRoute from './routes/auth.js';
-import userRoute from './routes/user.js';
-import chatRoute from './routes/chat.js';
-import messageRoute from './routes/message.js';
-
+import authRoute from '../routes/auth.routes.js';
+import userRoute from '../routes/user.routes.js';
 
 const { json, raw, urlencoded } = bodyParser;
 config();
@@ -46,14 +43,12 @@ app.get('/', (_, res) => {
         "message": "Hello world",
         "database": "Mongodb database instance connected",
         "auth": "Added google OAuth2.0",
-        "socket":"Added socket instance for communication"
+        "socket": "Added socket instance for communication"
     })
 })
 
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
-app.use('/chat', chatRoute);
-app.use('/message', messageRoute);
 
 export async function connectDb() {
     connect(process.env.MONGODB_URI, {
