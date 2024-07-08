@@ -1,6 +1,6 @@
-import server, { connectDb, io } from "./src/conf/server.js"
+import server, { connectDb, io } from "./src/server/main.js"
 
-import configureSockets from "./src/conf/socket.js"
+import configureSockets from "./src/server/socket.js"
 
 
 const PORT = process.env.PORT || 8080

@@ -6,6 +6,7 @@ import { config } from 'dotenv'
 import cors from 'cors'
 import { connect } from 'mongoose'
 import { Server } from 'socket.io'
+import helmet from 'helmet';
 
 import authRoute from '../routes/auth.routes.js';
 import userRoute from '../routes/user.routes.js';
@@ -30,6 +31,7 @@ app.use(urlencoded({
     extended: true,
 }))
 app.use(raw())
+app.use(helmet());
 app.use(cors({
     origin: 'http://localhost:3000',
     allowedHeaders: '*',
