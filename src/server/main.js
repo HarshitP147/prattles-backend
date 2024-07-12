@@ -10,6 +10,7 @@ import helmet from 'helmet';
 
 import authRoute from '../routes/auth.routes.js';
 import userRoute from '../routes/user.routes.js';
+import chatRoute from '../routes/chat.routes.js';
 
 const { json, raw, urlencoded } = bodyParser;
 config();
@@ -51,6 +52,7 @@ app.get('/', (_, res) => {
 
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
+app.use('/chat',chatRoute);
 
 export async function connectDb() {
     connect(process.env.MONGODB_URI, {

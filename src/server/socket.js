@@ -49,6 +49,10 @@ export default function configureSockets(io) {
 
         })
 
+        socket.on('chat', async (chatInfo) => {
+            console.log(chatInfo)
+        })
+
         socket.on("leaveRoom", roomInfo => {
             socket.leave(roomInfo.chatId);
         });
