@@ -12,7 +12,7 @@ async function getUser(req, res) {
         return res.status(200).json({
             email: user.email,
             name: user.name,
-            profileUrl: user.avatarUrl,
+            imageUrl: user.avatarUrl,
         })
 
     } catch (err) {

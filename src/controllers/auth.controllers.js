@@ -46,12 +46,8 @@ async function authPost(req, res) {
 
             await newUser.save()
 
-            const { token, tokenExpiry } = generateToken(newUser.email, newUser.userId);
-
             return res.status(200).json({
                 message: 'User saved succesfully',
-                token: token,
-                tokenExpiry: tokenExpiry,
                 userId: newUser.userId,
             })
 
@@ -67,13 +63,9 @@ async function authPost(req, res) {
     } else {
         // user already exists
 
-        const { token, tokenExpiry } = generateToken(existingUser.email, existingUser._id);
-
         return res.status(200).json({
             message: "User signed in succesfully",
             userId: existingUser.userId,
-            token: token,
-            tokenExpiry: tokenExpiry
         })
     }
 }

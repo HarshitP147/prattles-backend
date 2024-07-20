@@ -15,16 +15,18 @@ import chatRoute from '../routes/chat.routes.js';
 const { json, raw, urlencoded } = bodyParser;
 config();
 
+const corsConfig = {
+    origin: `http://localhost:3000`,
+    allowedHeaders: '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    preflightContinue: true
+}
+
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
-    cors: {
-        origin: 'http://localhost:3000',
-        allowedHeaders: '*',
-        credentials: true,
-        methods: ["GET", "POST", "PUT", "DELETE"],
-        preflightContinue: true
-    },
+    cors: corsConfig
 })
 
 app.use(json());
@@ -33,26 +35,17 @@ app.use(urlencoded({
 }))
 app.use(raw())
 app.use(helmet());
-app.use(cors({
-    origin: 'http://localhost:3000',
-    allowedHeaders: '*',
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    preflightContinue: true
-}));
+app.use(cors(corsConfig));
 
 app.get('/', (_, res) => {
-    res.json({
-        "message": "Hello world",
-        "database": "Mongodb database instance connected",
-        "auth": "Added google OAuth2.0",
-        "socket": "Added socket instance for communication"
-    })
+    res.redirect(`http://localhost:3000/`)
 })
 
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
-app.use('/chat',chatRoute);
+app.use('/chat', chatRoute);
+
+app.get('/*', (_, res) => res.redirect('http://localhost:3000/'))
 
 export async function connectDb() {
     connect(process.env.MONGODB_URI, {

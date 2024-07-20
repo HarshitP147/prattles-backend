@@ -18,8 +18,6 @@ async function getChatMessages(req, res) {
                 }
             })
 
-
-
         res.status(200).json(chatMessages);
 
     } catch (err) {
