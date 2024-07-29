@@ -11,7 +11,7 @@ async function newMessage(messageInfo) {
 
     const { chatId, content, sender } = messageInfo
 
-    const senderId = await User.findOne({
+    const messageSender = await User.findOne({
         userId: sender
     })
 
@@ -23,7 +23,7 @@ async function newMessage(messageInfo) {
 
         const newMsg = new Message({
             messageId: messageId,
-            sender: senderId,
+            sender: messageSender,
             content: {
                 text: content.text,
             }
@@ -48,8 +48,17 @@ async function newMessage(messageInfo) {
         await session.commitTransaction()
         session.endSession();
 
+        let newMessageContent = {
+            content: newMsg.content,
+            sender: {
+                userId: messageSender.userId,
+                _id: messageSender._id
+            },
+            createdAt: newMsg.createdAt,
+        }
+
         // return a promise with some message properties to update immediately
-        return Promise.resolve();
+        return Promise.resolve(newMessageContent);
 
     } catch (err) {
         console.log('Aborting transaction');

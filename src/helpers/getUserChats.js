@@ -7,19 +7,11 @@ async function getUserChats(userId) {
         .select('chats')
         .populate({
             path: "chats",
-            select: "chatId chatType lastMessage participants",
+            select: "chatId chatType  participants",
             populate: [{
                 path: "participants",
                 select: "userId name email avatarUrl"
-            },
-            {
-                path: "lastMessage",
-                select: "sender content.text createdAt",
-                populate: {
-                    path: "sender",
-                    select: "userId name"
-                }
-            }]
+            },]
         });
 
     const processedChats = userChats.chats.map(chat => {

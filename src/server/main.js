@@ -16,7 +16,7 @@ const { json, raw, urlencoded } = bodyParser;
 config();
 
 const corsConfig = {
-    origin: `http://localhost:3000`,
+    origin: `*`,
     allowedHeaders: '*',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],

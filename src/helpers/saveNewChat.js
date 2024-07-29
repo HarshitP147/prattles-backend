@@ -7,10 +7,9 @@ import Chat from "../models/Chat.js";
 import Message from '../models/Message.js';
 
 async function saveNewChat(fromId, toId, message) {
-    let fromUser, toUser;
 
-    fromUser = await User.findOne({ userId: fromId });
-    toUser = await User.findOne({ userId: toId })
+    const fromUser = await User.findOne({ userId: fromId });
+    const toUser = await User.findOne({ userId: toId })
 
     // implementing sessions to follow all or none property
     const session = await startSession()
@@ -66,6 +65,7 @@ async function saveNewChat(fromId, toId, message) {
         session.endSession();
 
     } catch (err) {
+        console.error(err);
         await session.abortTransaction();
         session.endSession()
     }

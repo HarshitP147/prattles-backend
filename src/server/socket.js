@@ -3,6 +3,7 @@ import User from "../models/User.js";
 
 import saveNewChat from '../helpers/saveNewChat.js';
 import getUserChats from "../helpers/getUserChats.js";
+import newMessage from "../helpers/newMessage.js";
 
 export default function configureSockets(io) {
 
@@ -33,28 +34,33 @@ export default function configureSockets(io) {
 
         })
 
-        socket.on("joinRoom", roomInfo => {
-            socket.join(roomInfo.chatId)
+        socket.on("joinRoom", chatId => {
+            socket.join(chatId);
         });
 
-        socket.on('chatList', async (userId, callback) => {
+        socket.on('chatList', async (userId) => {
 
             try {
                 const processedChats = await getUserChats(userId);
 
-                callback(processedChats);
+                socket.emit('updateChatList', processedChats);
+                // callback(processedChats);
             } catch (err) {
-                callback(err);
+                socket.emit('updateChatList', []);
+                console.error(err);
             }
 
         })
 
         socket.on('chat', async (chatInfo) => {
-            console.log(chatInfo)
+
+            const newMessageResponse = await newMessage(chatInfo);
+
+            io.to(chatInfo.chatId).emit('newMessage', newMessageResponse);
         })
 
-        socket.on("leaveRoom", roomInfo => {
-            socket.leave(roomInfo.chatId);
+        socket.on("leaveRoom", chatId => {
+            socket.leave(chatId);
         });
 
 
