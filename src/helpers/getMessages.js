@@ -1,8 +1,6 @@
 import Chat from "../models/Chat.js";
-import Message from "../models/Message.js";
 
-
-async function getMessages(chatId) {
+export default async function getMessages(chatId) {
     // get all the messages
 
     const chatMessages = await Chat.findOne({
@@ -11,6 +9,10 @@ async function getMessages(chatId) {
         .select('messages')
         .populate({
             path: 'messages',
+            options: {
+                createdAt: -1,
+                // limit: 14,
+            },
             select: 'sender content repliedTo',
             populate: {
                 path: 'sender',
@@ -18,4 +20,5 @@ async function getMessages(chatId) {
             }
         })
 
+    return chatMessages;
 }
