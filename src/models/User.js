@@ -12,6 +12,11 @@ const userSchema = new Schema({
         default: Date.now
     },
     avatarUrl: String,
+    contacts: [{
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    }],
     chats: [{
         type: Schema.Types.ObjectId,
         ref: "Chat",

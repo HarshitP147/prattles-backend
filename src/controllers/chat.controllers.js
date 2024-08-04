@@ -1,5 +1,3 @@
-import Chat from '../models/Chat.js'
-
 import getMessages from '../helpers/getMessages.js';
 
 async function getChatMessages(req, res) {

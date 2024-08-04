@@ -17,6 +17,22 @@ async function saveNewChat(fromId, toId, message) {
     session.startTransaction();
 
     try {
+        // before creating a new chat, we need to check whether fromUser is already in contacts with toUser
+        let alreadyInContacts = false;
+
+        for (const contacts of fromUser.contacts) {
+            // console.dir(contacts._id);
+            if (toUser._id.equals(contacts)) {
+                alreadyInContacts = true
+            }
+        }
+
+        if (alreadyInContacts) {
+            throw new Error('Already in contacts');
+        }
+
+
+        // if not, proceed to create a new chat
         const chatId = generateId("cht");
         const messageId = generateId("msg");
 
@@ -53,12 +69,28 @@ async function saveNewChat(fromId, toId, message) {
             }, { session: session }
         )
 
+        await fromUser.updateOne({
+            $push: {
+                contacts: toUser._id
+            }
+        }, {
+            session: session
+        })
+
         if (fromId !== toId) {
             await User.findOneAndUpdate({ userId: toId },
                 {
                     $addToSet: { chats: newChat._id },
                 }, { session: session }
             )
+
+            await toUser.updateOne({
+                $push: {
+                    contacts: fromUser._id
+                }
+            }, {
+                session: session
+            })
         }
 
         await session.commitTransaction()
