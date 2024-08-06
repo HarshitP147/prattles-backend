@@ -8,6 +8,11 @@ async function getUserChats(userId) {
         .populate({
             path: "chats",
             select: "chatId chatType  participants",
+            options: {
+                sort: {
+                    updatedAt: -1
+                }
+            },
             populate: [{
                 path: "participants",
                 select: "userId name email avatarUrl"
