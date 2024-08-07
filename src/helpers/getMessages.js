@@ -9,11 +9,7 @@ export default async function getMessages(chatId) {
         .select('messages')
         .populate({
             path: 'messages',
-            options: {
-                createdAt: -1,
-                // limit: 14,
-            },
-            select: 'sender content repliedTo',
+            select: 'sender content repliedTo createdAt ',
             populate: {
                 path: 'sender',
                 select: 'userId'

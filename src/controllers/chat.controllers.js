@@ -11,6 +11,7 @@ async function getChatMessages(req, res) {
 
     } catch (err) {
         console.error(err);
+        // console.log('there is an error', err.name);
     }
 
 }
