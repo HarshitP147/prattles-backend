@@ -38,14 +38,14 @@ app.use(helmet());
 app.use(cors(corsConfig));
 
 app.get('/', (_, res) => {
-    res.redirect(`http://localhost:3000/`)
+    res.redirect(`https://prattles.netlify.app/`)
 })
 
 app.use("/auth", authRoute);
 app.use("/user", userRoute);
 app.use('/chat', chatRoute);
 
-app.get('/*', (_, res) => res.redirect('http://localhost:3000/'))
+app.get('/*', (_, res) => res.redirect('https://prattles.netlify.app/'))
 
 export async function connectDb() {
     connect(process.env.MONGODB_URI, {

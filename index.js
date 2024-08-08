@@ -9,5 +9,5 @@ server.listen(PORT, () => {
     console.clear()
     configureSockets(io);
     connectDb()
-    console.log(`Server running http://localhost:8080/`)
+    console.log(`Server running on port:${process.env.PORT}`)
 })
