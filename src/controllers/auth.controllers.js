@@ -1,6 +1,5 @@
 import User from "../models/User.js";
 
-import generateToken from "../utils/generateToken.js";
 import generateId from "../utils/generateId.js";
 
 async function authPost(req, res) {
